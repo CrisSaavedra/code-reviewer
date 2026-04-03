@@ -1,0 +1,41 @@
+{
+  "name": "code-reviewer-cli",
+  "version": "0.1.0",
+  "description": "A keyboard-driven terminal tool for reviewing local git diff changes",
+  "type": "module",
+  "bin": {
+    "cr": "./dist/cli.js"
+  },
+  "main": "./dist/cli.js",
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsc",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "keywords": [
+    "cli",
+    "git",
+    "code-review",
+    "terminal"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "clipboardy": "^4.0.0",
+    "commander": "^12.0.0",
+    "execa": "^9.0.0",
+    "ink": "^5.0.1",
+    "ink-text-input": "^6.0.0",
+    "react": "^18.2.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node-lts": "^20.1.3",
+    "@types/react": "^18.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "vitest": "^4.1.2"
+  }
+}
