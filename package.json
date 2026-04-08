@@ -12,9 +12,9 @@
     "bun": ">=1.3.0"
   },
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "dev": "bun --watch src/cli.ts",
-    "build": "bun run clean && bunx tsc",
+    "build": "bun run clean && bunx tsc -p tsconfig.build.json",
     "test": "bunx vitest",
     "test:run": "bunx vitest run"
   },

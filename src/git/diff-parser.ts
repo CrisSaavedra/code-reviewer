@@ -55,31 +55,31 @@ function parseFileStatus(headerLines: string[]): {
       const renameFromMatch = RENAME_FROM_RE.exec(line);
       if (renameFromMatch) {
         status = "renamed";
-        oldFilePath = renameFromMatch[1];
+        oldFilePath = renameFromMatch[1] ?? oldFilePath;
         continue;
       }
       const renameToMatch = RENAME_TO_RE.exec(line);
       if (renameToMatch) {
-        filePath = renameToMatch[1];
+        filePath = renameToMatch[1] ?? filePath;
         continue;
       }
     }
 
     const fileBMatch = FILE_B_RE.exec(line);
     if (fileBMatch && !filePath) {
-      filePath = fileBMatch[1];
+      filePath = fileBMatch[1] ?? filePath;
     }
 
     const fileAMatch = FILE_A_RE.exec(line);
     if (fileAMatch && status === "deleted") {
-      filePath = fileAMatch[1];
+      filePath = fileAMatch[1] ?? filePath;
     }
   }
 
   // Fallback: extract from diff --git line
   if (!filePath && headerLines[0]) {
     const match = /^diff --git a\/.+ b\/(.+)$/.exec(headerLines[0]);
-    if (match) filePath = match[1];
+    if (match) filePath = match[1] ?? filePath;
   }
 
   return { filePath, oldFilePath, status };
@@ -95,9 +95,9 @@ function parseHunks(hunkLines: string[]): DiffHunk[] {
     const hunkMatch = HUNK_HEADER_RE.exec(line);
     if (hunkMatch) {
       if (current) hunks.push(current);
-      oldLine = parseInt(hunkMatch[1], 10);
+      oldLine = parseInt(hunkMatch[1] ?? "0", 10);
       const oldCount = hunkMatch[2] !== undefined ? parseInt(hunkMatch[2], 10) : 1;
-      newLine = parseInt(hunkMatch[3], 10);
+      newLine = parseInt(hunkMatch[3] ?? "0", 10);
       const newCount = hunkMatch[4] !== undefined ? parseInt(hunkMatch[4], 10) : 1;
       current = {
         header: line,
