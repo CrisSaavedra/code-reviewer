@@ -1,11 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("execa");
+vi.mock("execa", () => ({
+  execa: vi.fn(),
+}));
 
-import { isGitRepo, getBranchName, getRawDiff, getRawFileDiff } from "../../git/git-service.js";
+import {
+  isGitRepo,
+  getBranchName,
+  getRawDiff,
+  getRawFileDiff,
+} from "../../git/git-service.js";
 
 const { execa } = await import("execa");
-const execaMock = vi.mocked(execa);
+const execaMock = execa as ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -80,7 +87,7 @@ describe("getRawFileDiff", () => {
   it("throws a descriptive error on failure", async () => {
     execaMock.mockRejectedValueOnce(new Error("git failed"));
     await expect(getRawFileDiff("src/foo.ts", 3)).rejects.toThrow(
-      "Failed to get diff for src/foo.ts"
+      "Failed to get diff for src/foo.ts",
     );
   });
 });

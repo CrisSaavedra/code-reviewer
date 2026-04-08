@@ -7,8 +7,8 @@ It allows the user to:
 - inspect changed files from the current git diff
 - navigate changed lines directly from the terminal
 - add two kinds of review notes:
-    - **Comment**
-    - **Proposed change**
+  - **Comment**
+  - **Proposed change**
 - generate a final **markdown review summary**
 - copy that summary and use it in a PR, issue, or external review process
 
@@ -51,7 +51,8 @@ The MVP does **not** need:
 ---
 
 ## Stack
-Node LTS + TypeScript + Commander + Zod + Ink (React for terminal) + Chalk + Execa + Vitest
+
+Bun + TypeScript + Commander + Zod + Ink (React for terminal) + Chalk + Execa + Vitest
 
 ### Stack details
 
@@ -239,23 +240,23 @@ Because both note types are almost identical in behavior, they should share the 
 ## Panel switching
 
 - `Tab`
-    - Switch active panel between left and right
+  - Switch active panel between left and right
 
 ## Left panel navigation
 
 When the left panel is active:
 
 - `↑`
-    - Move selection up through files
+  - Move selection up through files
 - `↓`
-    - Move selection down through files
+  - Move selection down through files
 
 If hierarchy is implemented:
 
 - `→`
-    - Expand folder / open child level
+  - Expand folder / open child level
 - `←`
-    - Collapse folder / go back in hierarchy
+  - Collapse folder / go back in hierarchy
 
 When a file is selected:
 
@@ -266,9 +267,9 @@ When a file is selected:
 When the right panel is active:
 
 - `↑`
-    - Move selection up through visible diff lines
+  - Move selection up through visible diff lines
 - `↓`
-    - Move selection down through visible diff lines
+  - Move selection down through visible diff lines
 
 Selection is line-based.
 
@@ -456,8 +457,8 @@ The final markdown output must:
 - include date
 - group notes by file
 - within each file, separate:
-    - proposed changes
-    - comments
+  - proposed changes
+  - comments
 
 It should avoid overly heavy file sections, but still keep grouping clear.
 
@@ -619,28 +620,28 @@ The note model and command system should make it easy to add later:
 To keep the code modular, the MVP should be split into responsibilities like:
 
 - **CLI entry module**
-    - bootstraps command `cr`
+  - bootstraps command `cr`
 - **Git module**
-    - detects repo
-    - gets branch
-    - gets diff
-    - parses changed files and hunks
+  - detects repo
+  - gets branch
+  - gets diff
+  - parses changed files and hunks
 - **UI module**
-    - renders panels
-    - handles status bar
-    - handles modal rendering
+  - renders panels
+  - handles status bar
+  - handles modal rendering
 - **Navigation module**
-    - active panel
-    - selected file
-    - selected line
-    - expand state
+  - active panel
+  - selected file
+  - selected line
+  - expand state
 - **Review notes module**
-    - create/store/list notes
-    - comment and proposed change handling
+  - create/store/list notes
+  - comment and proposed change handling
 - **Markdown module**
-    - convert saved notes into final markdown output
+  - convert saved notes into final markdown output
 - **Clipboard module**
-    - copy markdown text
+  - copy markdown text
 
 This is enough modularization for a solid MVP without overengineering.
 
