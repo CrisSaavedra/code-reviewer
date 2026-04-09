@@ -20,6 +20,7 @@ export async function getBranchName(): Promise<string> {
 
 export async function getRawDiff(contextLines = 3): Promise<string> {
   try {
+    await execa("git", ["add", "--intent-to-add", "."]);
     const { stdout } = await execa("git", [
       "diff",
       `--unified=${contextLines}`,
@@ -27,14 +28,15 @@ export async function getRawDiff(contextLines = 3): Promise<string> {
     return stdout;
   } catch (error) {
     throw new Error(
-      `Failed to get git diff: ${error instanceof Error ? error.message : String(error)}`
+      `Failed to get git diff: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }
 
+// Consider delete this function, for now it's unsed
 export async function getRawFileDiff(
   filePath: string,
-  contextLines: number
+  contextLines: number,
 ): Promise<string> {
   try {
     const { stdout } = await execa("git", [
@@ -46,7 +48,7 @@ export async function getRawFileDiff(
     return stdout;
   } catch (error) {
     throw new Error(
-      `Failed to get diff for ${filePath}: ${error instanceof Error ? error.message : String(error)}`
+      `Failed to get diff for ${filePath}: ${error instanceof Error ? error.message : String(error)}`,
     );
   }
 }

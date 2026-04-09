@@ -10,6 +10,7 @@ export interface OutputWriter {
 export interface ReviewCliDependencies {
   isGitRepo: () => Promise<boolean>;
   getRawDiff: () => Promise<string>;
+  getNewDiff: () => void;
   parseDiff: (rawDiff: string) => ChangedFile[];
   renderReviewApp: (changedFiles: ChangedFile[]) => void;
   stdout: OutputWriter;
@@ -21,11 +22,12 @@ function formatErrorMessage(error: unknown): string {
 }
 
 export async function runReviewCli(
-  dependencies: Partial<ReviewCliDependencies> = {}
+  dependencies: Partial<ReviewCliDependencies> = {},
 ): Promise<number> {
   const resolvedDependencies: ReviewCliDependencies = {
     isGitRepo,
     getRawDiff: async () => getRawDiff(),
+    getNewDiff: async () => {},
     parseDiff,
     renderReviewApp,
     stdout: process.stdout,
@@ -38,7 +40,7 @@ export async function runReviewCli(
 
     if (!insideGitRepo) {
       resolvedDependencies.stderr.write(
-        "No git repository detected in the current directory.\n"
+        "No git repository detected in the current directory.\n",
       );
       return 1;
     }
@@ -51,11 +53,11 @@ export async function runReviewCli(
       return 0;
     }
 
-    resolvedDependencies.renderReviewApp(changedFiles);
+    // resolvedDependencies.renderReviewApp(changedFiles);
     return 0;
   } catch (error) {
     resolvedDependencies.stderr.write(
-      `Failed to start review UI: ${formatErrorMessage(error)}\n`
+      `Failed to start review UI: ${formatErrorMessage(error)}\n`,
     );
     return 1;
   }
