@@ -96,9 +96,11 @@ function parseHunks(hunkLines: string[]): DiffHunk[] {
     if (hunkMatch) {
       if (current) hunks.push(current);
       oldLine = parseInt(hunkMatch[1] ?? "0", 10);
-      const oldCount = hunkMatch[2] !== undefined ? parseInt(hunkMatch[2], 10) : 1;
+      const oldCount =
+        hunkMatch[2] !== undefined ? parseInt(hunkMatch[2], 10) : 1;
       newLine = parseInt(hunkMatch[3] ?? "0", 10);
-      const newCount = hunkMatch[4] !== undefined ? parseInt(hunkMatch[4], 10) : 1;
+      const newCount =
+        hunkMatch[4] !== undefined ? parseInt(hunkMatch[4], 10) : 1;
       current = {
         header: line,
         oldStart: oldLine,
@@ -125,14 +127,29 @@ function parseHunks(hunkLines: string[]): DiffHunk[] {
     let diffLine: DiffLine;
 
     if (prefix === "+") {
-      diffLine = { type: "added", content, oldLineNumber: null, newLineNumber: newLine };
+      diffLine = {
+        type: "added",
+        content,
+        oldLineNumber: null,
+        newLineNumber: newLine,
+      };
       newLine++;
     } else if (prefix === "-") {
-      diffLine = { type: "removed", content, oldLineNumber: oldLine, newLineNumber: null };
+      diffLine = {
+        type: "removed",
+        content,
+        oldLineNumber: oldLine,
+        newLineNumber: null,
+      };
       oldLine++;
     } else {
       // context line (space prefix)
-      diffLine = { type: "context", content, oldLineNumber: oldLine, newLineNumber: newLine };
+      diffLine = {
+        type: "context",
+        content,
+        oldLineNumber: oldLine,
+        newLineNumber: newLine,
+      };
       oldLine++;
       newLine++;
     }
@@ -152,7 +169,9 @@ export function parseDiff(rawDiff: string): ChangedFile[] {
 
   return blocks
     .map((block): ChangedFile | null => {
-      const { filePath, oldFilePath, status } = parseFileStatus(block.headerLines);
+      const { filePath, oldFilePath, status } = parseFileStatus(
+        block.headerLines,
+      );
       if (!filePath) return null;
 
       const hunks = parseHunks(block.hunkLines);
