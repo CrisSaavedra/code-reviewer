@@ -127,7 +127,9 @@ describe("runReviewCli", () => {
     });
 
     expect(exitCode).toBe(1);
-    expect(stderr.getOutput()).toContain("Failed to start review UI: git failed");
+    expect(stderr.getOutput()).toContain(
+      "Failed to start review UI: git failed",
+    );
     expect(renderReviewApp).not.toHaveBeenCalled();
   });
 });

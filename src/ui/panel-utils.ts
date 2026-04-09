@@ -6,7 +6,7 @@ export interface VisibleWindow {
 export function getVisibleWindow(
   itemCount: number,
   selectedIndex: number,
-  maxVisibleRows: number
+  maxVisibleRows: number,
 ): VisibleWindow {
   if (itemCount <= 0 || maxVisibleRows <= 0) {
     return { startIndex: 0, endIndex: 0 };

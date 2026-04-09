@@ -6,16 +6,25 @@ interface StatusBarProps {
   selectedFilePath: string;
 }
 
-export function StatusBar({ activePanel, selectedFilePath }: StatusBarProps): JSX.Element {
+export function StatusBar({
+  activePanel,
+  selectedFilePath,
+}: StatusBarProps): JSX.Element {
   return (
-    <Box borderStyle="round" borderColor="gray" flexDirection="column" paddingX={1}>
+    <Box
+      borderStyle="round"
+      borderColor="gray"
+      flexDirection="column"
+      paddingX={1}
+    >
       <Text>
-        Active: <Text color="cyan">{activePanel === "files" ? "Files" : "Diff"}</Text>
-        <Text>  |  Tab switch  |  Arrows navigate  |  Ctrl+Q exit</Text>
+        Active:{" "}
+        <Text color="cyan">{activePanel === "files" ? "Files" : "Diff"}</Text>
+        <Text> | Tab switch | Arrows navigate | Ctrl+Q exit</Text>
       </Text>
       <Text>
         File: <Text color="white">{selectedFilePath}</Text>
-        <Text>  |  Notes: 0 comments / 0 proposed changes</Text>
+        <Text> | Notes: 0 comments / 0 proposed changes</Text>
       </Text>
     </Box>
   );

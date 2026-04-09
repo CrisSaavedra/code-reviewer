@@ -24,7 +24,7 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
   const { stdout } = useStdout();
   const diffRowsByFile = changedFiles.map((file) => buildDiffRows(file));
   const [navigation, setNavigation] = useState(() =>
-    createInitialNavigationState(diffRowsByFile)
+    createInitialNavigationState(diffRowsByFile),
   );
 
   const columns = stdout.columns ?? MIN_COLUMNS;
@@ -70,7 +70,12 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
 
   if (columns < MIN_COLUMNS || rows < MIN_ROWS) {
     return (
-      <Box borderStyle="round" borderColor="yellow" flexDirection="column" paddingX={1}>
+      <Box
+        borderStyle="round"
+        borderColor="yellow"
+        flexDirection="column"
+        paddingX={1}
+      >
         <Text color="yellow">Terminal too small for the review UI.</Text>
         <Text>
           Resize to at least {MIN_COLUMNS}x{MIN_ROWS} and run `cr` again.
@@ -80,7 +85,8 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
     );
   }
 
-  const selectedFileIndex = navigation.selectedFileIndex >= 0 ? navigation.selectedFileIndex : 0;
+  const selectedFileIndex =
+    navigation.selectedFileIndex >= 0 ? navigation.selectedFileIndex : 0;
   const selectedFile = changedFiles[selectedFileIndex] ?? changedFiles[0];
 
   if (!selectedFile) {
@@ -92,7 +98,8 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
   }
 
   const selectedDiffRows = diffRowsByFile[selectedFileIndex] ?? [];
-  const selectedDiffRowIndex = navigation.selectedDiffRowIndices[selectedFileIndex] ?? 0;
+  const selectedDiffRowIndex =
+    navigation.selectedDiffRowIndices[selectedFileIndex] ?? 0;
   const contentHeight = Math.max(rows - 5, 10);
   const bodyRowCount = Math.max(contentHeight - 4, 3);
   const filePanelWidth = Math.max(Math.floor(columns / 3), 24);
@@ -122,7 +129,10 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
         </Box>
       </Box>
       <Box marginTop={1}>
-        <StatusBar activePanel={navigation.activePanel} selectedFilePath={selectedFile.filePath} />
+        <StatusBar
+          activePanel={navigation.activePanel}
+          selectedFilePath={selectedFile.filePath}
+        />
       </Box>
     </Box>
   );

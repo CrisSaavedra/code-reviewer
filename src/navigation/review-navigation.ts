@@ -18,13 +18,13 @@ export function getInitialDiffRowIndex(diffRows: DiffRow[]): number {
 }
 
 export function createInitialNavigationState(
-  diffRowsByFile: DiffRow[][]
+  diffRowsByFile: DiffRow[][],
 ): ReviewNavigationState {
   return {
     activePanel: "files",
     selectedFileIndex: diffRowsByFile.length === 0 ? -1 : 0,
     selectedDiffRowIndices: diffRowsByFile.map((diffRows) =>
-      getInitialDiffRowIndex(diffRows)
+      getInitialDiffRowIndex(diffRows),
     ),
   };
 }
@@ -36,13 +36,17 @@ export function toggleActivePanel(activePanel: ActivePanel): ActivePanel {
 export function moveFileSelection(
   state: ReviewNavigationState,
   fileCount: number,
-  delta: number
+  delta: number,
 ): ReviewNavigationState {
   if (fileCount === 0) {
     return state;
   }
 
-  const nextFileIndex = clamp(state.selectedFileIndex + delta, 0, fileCount - 1);
+  const nextFileIndex = clamp(
+    state.selectedFileIndex + delta,
+    0,
+    fileCount - 1,
+  );
 
   if (nextFileIndex === state.selectedFileIndex) {
     return state;
@@ -57,7 +61,7 @@ export function moveFileSelection(
 export function moveDiffSelection(
   state: ReviewNavigationState,
   diffRows: DiffRow[],
-  delta: number
+  delta: number,
 ): ReviewNavigationState {
   if (diffRows.length === 0 || state.selectedFileIndex < 0 || delta === 0) {
     return state;

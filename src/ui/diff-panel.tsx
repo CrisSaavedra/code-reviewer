@@ -16,7 +16,9 @@ function formatLineNumber(value: number | null): string {
   return value === null ? "   -" : value.toString().padStart(4, " ");
 }
 
-function getRowColor(row: DiffRow): "green" | "red" | "gray" | "yellow" | "white" {
+function getRowColor(
+  row: DiffRow,
+): "green" | "red" | "gray" | "yellow" | "white" {
   switch (row.type) {
     case "added":
       return "green";
@@ -39,11 +41,12 @@ export function DiffPanel({
   maxVisibleRows,
   width,
 }: DiffPanelProps): JSX.Element {
-  const safeSelectedIndex = rows.length === 0 ? 0 : Math.max(selectedRowIndex, 0);
+  const safeSelectedIndex =
+    rows.length === 0 ? 0 : Math.max(selectedRowIndex, 0);
   const { startIndex, endIndex } = getVisibleWindow(
     rows.length,
     safeSelectedIndex,
-    maxVisibleRows
+    maxVisibleRows,
   );
   const visibleRows = rows.slice(startIndex, endIndex);
   const contentWidth = Math.max(width - 22, 20);
@@ -57,7 +60,9 @@ export function DiffPanel({
       paddingY={0}
       height="100%"
     >
-      <Text color={isActive ? "cyan" : "white"}>{truncateText(file.filePath, width - 4)}</Text>
+      <Text color={isActive ? "cyan" : "white"}>
+        {truncateText(file.filePath, width - 4)}
+      </Text>
       <Box flexDirection="column" marginTop={1}>
         {visibleRows.map((row, index) => {
           const rowIndex = startIndex + index;

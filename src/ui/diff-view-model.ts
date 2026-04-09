@@ -26,6 +26,7 @@ function getMessageForFile(file: ChangedFile): string {
 }
 
 export function buildDiffRows(file: ChangedFile): DiffRow[] {
+  const num = "";
   if (file.hunks.length === 0) {
     return [
       {
@@ -56,7 +57,8 @@ export function buildDiffRows(file: ChangedFile): DiffRow[] {
     });
 
     hunk.lines.forEach((line, lineIndex) => {
-      const prefix = line.type === "added" ? "+" : line.type === "removed" ? "-" : " ";
+      const prefix =
+        line.type === "added" ? "+" : line.type === "removed" ? "-" : " ";
       rows.push({
         key: `${file.filePath}:hunk:${hunkIndex}:line:${lineIndex}`,
         type: line.type,

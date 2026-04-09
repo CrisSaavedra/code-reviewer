@@ -23,7 +23,9 @@ function getStatusLabel(status: ChangedFile["status"]): string {
   }
 }
 
-function getStatusColor(status: ChangedFile["status"]): "green" | "red" | "yellow" | "blue" {
+function getStatusColor(
+  status: ChangedFile["status"],
+): "green" | "red" | "yellow" | "blue" {
   switch (status) {
     case "added":
       return "green";
@@ -46,7 +48,7 @@ export function FileListPanel({
   const { startIndex, endIndex } = getVisibleWindow(
     files.length,
     Math.max(selectedIndex, 0),
-    maxVisibleRows
+    maxVisibleRows,
   );
   const visibleFiles = files.slice(startIndex, endIndex);
   const contentWidth = Math.max(width - 8, 12);

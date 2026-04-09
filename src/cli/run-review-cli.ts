@@ -53,7 +53,7 @@ export async function runReviewCli(
       return 0;
     }
 
-    // resolvedDependencies.renderReviewApp(changedFiles);
+    resolvedDependencies.renderReviewApp(changedFiles);
     return 0;
   } catch (error) {
     resolvedDependencies.stderr.write(
