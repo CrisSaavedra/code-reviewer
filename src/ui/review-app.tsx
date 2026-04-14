@@ -102,13 +102,13 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
     navigation.selectedDiffRowIndices[selectedFileIndex] ?? 0;
   const contentHeight = Math.max(rows - 5, 10);
   const bodyRowCount = Math.max(contentHeight - 4, 3);
-  const filePanelWidth = Math.max(Math.floor(columns / 3), 24);
-  const diffPanelWidth = Math.max(columns - filePanelWidth - 1, 40);
+  const filePanelWidth = Math.min(Math.max(Math.floor(columns / 3), 24), 40);
+  const diffPanelWidth = Math.max(columns - filePanelWidth, 40);
 
   return (
     <Box flexDirection="column">
       <Box height={contentHeight}>
-        <Box width={filePanelWidth} marginRight={1}>
+        <Box width={filePanelWidth} flexShrink={0}>
           <FileListPanel
             files={changedFiles}
             selectedIndex={selectedFileIndex}
@@ -117,7 +117,7 @@ export function ReviewApp({ changedFiles }: ReviewAppProps): JSX.Element {
             width={filePanelWidth}
           />
         </Box>
-        <Box width={diffPanelWidth}>
+        <Box flexGrow={1}>
           <DiffPanel
             file={selectedFile}
             rows={selectedDiffRows}
