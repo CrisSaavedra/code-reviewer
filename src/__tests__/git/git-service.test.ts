@@ -50,17 +50,25 @@ describe("getBranchName", () => {
 describe("getRawDiff", () => {
   it("returns stdout from git diff", async () => {
     const fakeDiff = "diff --git a/foo.ts b/foo.ts\n";
+    execaMock.mockResolvedValueOnce({ stdout: "" } as never);
     execaMock.mockResolvedValueOnce({ stdout: fakeDiff } as never);
     expect(await getRawDiff()).toBe(fakeDiff);
   });
 
   it("uses default context of 3", async () => {
     execaMock.mockResolvedValueOnce({ stdout: "" } as never);
+    execaMock.mockResolvedValueOnce({ stdout: "" } as never);
     await getRawDiff();
+    expect(execaMock).toHaveBeenCalledWith("git", [
+      "add",
+      "--intent-to-add",
+      ".",
+    ]);
     expect(execaMock).toHaveBeenCalledWith("git", ["diff", "--unified=3"]);
   });
 
   it("uses provided context lines", async () => {
+    execaMock.mockResolvedValueOnce({ stdout: "" } as never);
     execaMock.mockResolvedValueOnce({ stdout: "" } as never);
     await getRawDiff(10);
     expect(execaMock).toHaveBeenCalledWith("git", ["diff", "--unified=10"]);

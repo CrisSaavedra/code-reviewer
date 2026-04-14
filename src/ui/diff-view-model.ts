@@ -26,7 +26,6 @@ function getMessageForFile(file: ChangedFile): string {
 }
 
 export function buildDiffRows(file: ChangedFile): DiffRow[] {
-  const num = "";
   if (file.hunks.length === 0) {
     return [
       {

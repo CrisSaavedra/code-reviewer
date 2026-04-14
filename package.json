@@ -17,7 +17,7 @@
     "build": "bun run clean && bunx tsc -p tsconfig.build.json",
     "test": "bunx vitest",
     "test:run": "bunx vitest run",
-    "lint": "bunx eslint src/**",
+    "lint": "bunx eslint \"src/**/*.{ts,tsx}\"",
     "format": "bunx prettier . --write"
   },
   "keywords": [

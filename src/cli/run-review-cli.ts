@@ -1,7 +1,10 @@
 import { parseDiff } from "../git/diff-parser.js";
-import { getRawDiff, isGitRepo } from "../git/git-service.js";
+import { getBranchName, getRawDiff, isGitRepo } from "../git/git-service.js";
 import type { ChangedFile } from "../git/types.js";
-import { renderReviewApp } from "../ui/render-review-app.js";
+import {
+  renderReviewApp,
+  type RenderReviewAppInput,
+} from "../ui/render-review-app.js";
 
 export interface OutputWriter {
   write(chunk: string): unknown;
@@ -9,10 +12,10 @@ export interface OutputWriter {
 
 export interface ReviewCliDependencies {
   isGitRepo: () => Promise<boolean>;
-  getRawDiff: () => Promise<string>;
-  getNewDiff: () => void;
+  getRawDiff: (contextLines?: number) => Promise<string>;
+  getBranchName: () => Promise<string>;
   parseDiff: (rawDiff: string) => ChangedFile[];
-  renderReviewApp: (changedFiles: ChangedFile[]) => void;
+  renderReviewApp: (input: RenderReviewAppInput) => void;
   stdout: OutputWriter;
   stderr: OutputWriter;
 }
@@ -26,8 +29,8 @@ export async function runReviewCli(
 ): Promise<number> {
   const resolvedDependencies: ReviewCliDependencies = {
     isGitRepo,
-    getRawDiff: async () => getRawDiff(),
-    getNewDiff: async () => {},
+    getRawDiff: async (contextLines?: number) => getRawDiff(contextLines),
+    getBranchName,
     parseDiff,
     renderReviewApp,
     stdout: process.stdout,
@@ -53,7 +56,15 @@ export async function runReviewCli(
       return 0;
     }
 
-    resolvedDependencies.renderReviewApp(changedFiles);
+    const branchName = await resolvedDependencies.getBranchName();
+    resolvedDependencies.renderReviewApp({
+      changedFiles,
+      branchName,
+      loadChangedFiles: async (contextLines: number) => {
+        const nextRawDiff = await resolvedDependencies.getRawDiff(contextLines);
+        return resolvedDependencies.parseDiff(nextRawDiff);
+      },
+    });
     return 0;
   } catch (error) {
     resolvedDependencies.stderr.write(
